@@ -1,73 +1,101 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# To-Do List App Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS-based backend for a To-Do List application with MongoDB integration for cross-device task synchronization.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- RESTful API for task management
+- MongoDB integration with Mongoose ODM
+- Full CRUD operations for tasks
+- Cross-device synchronization support
+- Environment-based configuration
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+- MongoDB (local instance or MongoDB Atlas)
 
 ## Installation
 
+1. Clone the repository
+2. Navigate to the backend directory:
+   ```bash
+   cd todo-backend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Set up your environment variables by creating a `.env` file in the root directory:
+   ```
+   MONGO_URI=mongodb://localhost:27017/todo-app
+   PORT=3001
+   FRONTEND_URL=http://localhost:3000
+   ```
+
+## Running the Application
+
+### Development Mode
+
 ```bash
-$ npm install
+npm run start:dev
 ```
 
-## Running the app
+### Production Mode
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm run build
+npm run start:prod
 ```
 
-## Test
+## API Endpoints
 
-```bash
-# unit tests
-$ npm run test
+| Method | Endpoint      | Description                   |
+|--------|---------------|-------------------------------|
+| GET    | /tasks        | Get all tasks                 |
+| GET    | /tasks/:id    | Get a specific task by ID     |
+| POST   | /tasks        | Create a new task             |
+| PATCH  | /tasks/:id    | Update a task by ID           |
+| DELETE | /tasks/:id    | Delete a task by ID           |
 
-# e2e tests
-$ npm run test:e2e
+## Project Structure
 
-# test coverage
-$ npm run test:cov
+```
+src/
+├── tasks/                  # Tasks module
+│   ├── dto/                # Data Transfer Objects
+│   │   ├── create-task.dto.ts
+│   │   └── update-task.dto.ts
+│   ├── schemas/            # MongoDB schemas
+│   │   └── task.schema.ts
+│   ├── tasks.controller.ts # API endpoints
+│   ├── tasks.module.ts     # Module definition
+│   └── tasks.service.ts    # Business logic
+├── app.module.ts           # Main application module
+└── main.ts                 # Application entry point
 ```
 
-## Support
+## Environment Variables
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Variable      | Description                            | Default                      |
+|---------------|----------------------------------------|------------------------------|
+| MONGO_URI     | MongoDB connection string              | mongodb://localhost:27017/todo-app |
+| PORT          | Port number for the API server         | 3001                         |
+| FRONTEND_URL  | URL of the frontend for CORS settings  | http://localhost:3000        |
 
-## Stay in touch
+## Deployment
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+For production deployment:
 
-## License
+1. Set up a MongoDB instance (MongoDB Atlas recommended for cloud deployment)
+2. Configure environment variables for your production environment
+3. Build the application: `npm run build`
+4. Start the application: `npm run start:prod`
 
-Nest is [MIT licensed](LICENSE).
+## Cross-device Synchronization
+
+The synchronization across devices is achieved by:
+- Storing all tasks in a central MongoDB database
+- Having the frontend regularly poll for updates
+- Implementing proper error handling and status indicators
